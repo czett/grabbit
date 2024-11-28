@@ -453,3 +453,25 @@ label.checkbox-lbl{
     font-size: 2rem;
     font-weight: 600;
 }
+
+.store-details{
+    font-size: 1.25rem;
+}
+
+.user-profile{
+    width: 100%;
+    padding-bottom: 2vh;
+}
+
+.user-profile .ratings-header{
+    font-size: 1.75rem;
+}
+
+.user-profile .rating{
+    font-size: 1.25rem;
+    line-height: 150%;
+}
+
+.users-ratings{
+    margin-bottom: 3vh;
+}

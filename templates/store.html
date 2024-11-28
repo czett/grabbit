@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Details - Store #{{ store.store_id }}</h1>
+
+<!-- Map container -->
+<div id="map"></div>
+
+<!-- Store details -->
+<p class="store-details"><strong>Adresse:</strong> {{ store.address }} <br> <strong>Standort:</strong> Latitude: {{ store.latitude }}, Longitude: {{ store.longitude }}</p>
+
+<h2>Bewertungen:</h2>
+<ul>
+    {% for rating in store.ratings %}
+        <li>
+            <a href="/profile/{{ rating.username }}"><strong>{{ rating.username }}</strong>:</a>
+            Bezahlt: {{ rating.paid_price }} Euro, 
+            Normalpreis: {{ rating.usual_price }} Euro,
+            Multiplikator: {{ (rating.usual_price / rating.paid_price) | round(2) }},
+            Kommentar: "{{ rating.comment }}"
+        </li>
+    {% endfor %}
+</ul>
+
+<script>
+    // Create the map
+    var map = L.map('map').setView([{{ store.latitude }}, {{ store.longitude }}], 13); // Set map view to store coordinates
+
+    // Set the tile Layer (OpenStreetMap)
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    // Add a marker for the store location
+    var marker = L.marker([{{ store.latitude }}, {{ store.longitude }}]).addTo(map);
+    marker.bindPopup("<b>Store #{{ store.store_id }}</b><br>Location: {{ store.latitude }}, {{ store.longitude }}").openPopup();
+</script>
+
+{% endblock %}

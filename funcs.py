@@ -204,3 +204,126 @@ def coords_to_address(latitude, longitude):
         return location.address
     else:
         return "Addresse nicht gefunden"
+    
+def get_store_details(store_id):
+    try:
+        conn = get_db_connection()
+        with conn:
+            with conn.cursor() as cur:
+                # Get store info
+                cur.execute("""
+                    SELECT store_id, latitude, longitude
+                    FROM stores
+                    WHERE store_id = %s
+                """, (store_id,))
+                store = cur.fetchone()
+                if not store:
+                    return None
+
+                store_id, latitude, longitude = store
+
+                cur.execute("""
+                    SELECT paid_price, usual_price, comment, username
+                    FROM purchases
+                    WHERE store_id = %s
+                """, (store_id,))
+                purchases = cur.fetchall()
+
+                # Calculate average prices
+                avg_paid_price = sum(p[0] for p in purchases) / len(purchases) if purchases else 0
+                avg_usual_price = sum(p[1] for p in purchases) / len(purchases) if purchases else 0
+
+                return {
+                    "store_id": store_id,
+                    "latitude": latitude,
+                    "longitude": longitude,
+                    "ratings": [
+                        {
+                            "username": p[3],
+                            "paid_price": p[0],
+                            "usual_price": p[1],
+                            "comment": p[2]
+                        }
+                        for p in purchases
+                    ],
+                    "avg_paid_price": avg_paid_price,
+                    "avg_usual_price": avg_usual_price
+                }
+    except Exception as e:
+        return {"error": str(e)}
+
+def get_user_purchases(user_id: int):
+    """
+    Fetches all unique stores the user has made purchases at, including their coordinates 
+    and the user's purchases in those stores.
+    
+    Args:
+        user_id (int): The ID of the user for whom to fetch purchases.
+    
+    Returns:
+        list: A list of dictionaries containing unique store details and the user's purchases at each store.
+    """
+    try:
+        conn = get_db_connection()
+        with conn:
+            with conn.cursor() as cur:
+                cur.execute("SELECT username FROM users WHERE user_id = %s", (user_id,))
+                username = cur.fetchone()
+
+                if not username:
+                    return {"message": "User not found."}
+
+                username = username[0]
+
+                # Holen der Stores, in denen der Benutzer Einkäufe getätigt hat
+                cur.execute("""
+                    SELECT 
+                        p.store_id,
+                        s.latitude,
+                        s.longitude,
+                        p.paid_price,
+                        p.usual_price,
+                        p.departments,
+                        p.comment
+                    FROM purchases p
+                    JOIN stores s ON p.store_id = s.store_id
+                    WHERE p.username = %s
+                """, (username,))
+
+                purchases = cur.fetchall()
+
+                if not purchases:
+                    return []
+
+                # Gruppiere nach Store ID, um Duplikate zu vermeiden
+                stores = {}
+                for purchase in purchases:
+                    store_id = purchase[0]
+                    if store_id not in stores:
+                        stores[store_id] = {
+                            "latitude": purchase[1],
+                            "longitude": purchase[2],
+                            "purchases": [],
+                        }
+                    stores[store_id]["purchases"].append({
+                        "paid_price": purchase[3],
+                        "usual_price": purchase[4],
+                        "departments": purchase[5],
+                        "comment": purchase[6]
+                    })
+
+                # Wandeln der stores in eine Liste von Dictionaries
+                return [
+                    {
+                        "store_id": store_id,
+                        "latitude": store_data["latitude"],
+                        "longitude": store_data["longitude"],
+                        "purchases": store_data["purchases"]
+                    }
+                    for store_id, store_data in stores.items()
+                ]
+
+    except Exception as e:
+        return {"error": str(e)}
+    finally:
+        conn.close()

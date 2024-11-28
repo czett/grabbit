@@ -4,44 +4,55 @@
 
 <div class="user-profile">
     <div class="banner">
-        <div class="title-text">{{name}}</div>
-        <div class="bottom-text">{{name}} has 0 ratings</div>
+        <div class="title-text">{{ name }}</div>
+        <div class="bottom-text">{{ name }} hat {{ purchases|length }} Einkäufe gepostet</div>
         <div class="icon">
             {% if own %}
-                <a href="/logout"><span class="material-symbols-rounded">logout</span></a>
-            {% else%}
-                <span class="material-symbols-rounded">stars</span>
+            <a href="/logout"><span class="material-symbols-rounded">logout</span></a>
+            {% else %}
+            <span class="material-symbols-rounded">stars</span>
             {% endif %}
         </div>
     </div>
 
-    <!-- {% if ratings|length > 0 %}
-    <h2 class="ratings-header">Ratings on go2klo:</h2>
-    <ul class="users-ratings">
-        {% for rating in ratings %}
-        <li class="rating">
-            <a href="/toilet/{{ rating.toilet_id }}"><strong>Toilet #{{ rating.toilet_id }}:</strong></a>
-            Cleanliness: {{ rating.cleanliness }},
-            Supplies: {{ rating.supplies }},
-            Privacy: {{ rating.privacy }},
-            Comment: "{{ rating.comment }}"
+    {% if purchases|length > 0 %}
+    <h2 class="purchases-header">Einkäufe bei go2klo:</h2>
+    <ul class="users-purchases">
+        {% for purchase in purchases %}
+        <li class="purchase">
+            <a href="/store/{{ purchase.store_id }}"><strong>Store #{{ purchase.store_id }}:</strong></a>
+            Bezahlt: {{ purchase.paid_price }} Euro;
+            Normalpreis: {{ purchase.usual_price }} Euro;
+            Abteilungen: {{ purchase.departments }};
+            Kommentar: "{{ purchase.comment }}"
         </li>
         {% endfor %}
     </ul>
-    {% endif %} -->
+    {% endif %}
 
-    <!-- <div id="map"></div>
-
-    <div class="trophy-case-title">Trophy Case</div>
-
-    <div class="trophy-case">
-        {% for trophy in achievements %}
-        <div class="trophy">
-            <img src="{{ url_for('static', filename='icons/' + trophy + '.png') }}">
-            <div class="name">{{trophy | replace("_", " ")}}</div>
-        </div>
-        {% endfor %}
-    </div> -->
+    <div id="map"></div> 
 </div>
+
+<script>
+    // Initialisiere die Karte und setze den Mittelpunkt (z.B. auf Europa)
+    var map = L.map('map').setView([51.1657, 10.4515], 6);  // Centered at Germany (Europe)
+
+    // Füge den OpenStreetMap Tile Layer hinzu
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    {% if purchases|length > 0 %}
+        // Füge Marker für jeden Store hinzu, in dem der Benutzer eingekauft hat
+        {% for purchase in purchases %}
+            var marker = L.marker([{{ purchase.latitude }}, {{ purchase.longitude }}]).addTo(map);
+            
+            // Bind Popup with the link to the store's page
+            marker.bindPopup("<b>Store #{{ purchase.store_id }}</b>").on('click', function() {
+                window.location.href = '/store/{{ purchase.store_id }}'; // Leitet zur Store-Seite weiter
+            });
+        {% endfor %}
+    {% endif %}
+</script>
 
 {% endblock %}

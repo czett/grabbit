@@ -76,20 +76,12 @@ def profile(pid):
 
     pid = int(pid)
     
-    #ratings = funcs.get_user_ratings(pid)
+    posts = funcs.get_user_purchases(pid)
     uname = funcs.get_username_by_user_id(pid)
 
     #user_achievements = funcs.get_achievements_by_user_id(pid)[1]
 
     # return str(ratings)
-
-    # Calculate the average latitude and longitude for all rated toilets
-    # if ratings != []:
-    #     avg_lat = sum(rating['latitude'] for rating in ratings) / len(ratings)
-    #     avg_lon = sum(rating['longitude'] for rating in ratings) / len(ratings)
-    # else:
-    #     # Default center if no ratings
-    #     avg_lat, avg_lon = 51.505, -0.09 # default is uk or so
 
     if session.get("user"):
         if session["user"] == uname:
@@ -106,7 +98,7 @@ def profile(pid):
     else:
         nots = []
 
-    return render_template("profile.html", ratings=[], session=session, name=uname, own=own)
+    return render_template("profile.html", purchases=posts, session=session, name=uname, own=own)
 
 @app.route("/profile/<username>")
 def profile_by_username(username):
@@ -185,6 +177,12 @@ def explore():
 def stores_api():
     stores = funcs.get_all_stores()
     return jsonify(stores)
+
+@app.route("/store/<sid>")
+def store(sid):
+    info = funcs.get_store_details(sid)
+    info["address"] = str(funcs.coords_to_address(info["latitude"], info["longitude"]))
+    return render_template("store.html", store=info, session=session)
 
 if __name__ == "__main__":
     app.run(debug=True, port=6500)
