@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="rating-form">
+    <form action="/post/process" enctype="multipart/form-data" method="post">
+        <h2 class="title">Poste einen "steal"! Wo war's?</h2>
+
+        <input type="text" name="location_query" required placeholder="Beschreibe den Laden. Adresse oder genauer Name:">
+    
+        <button type="submit">Weiter</button>
+    </form>
+</div>
+
+{% endblock %}

@@ -1,6 +1,7 @@
 import psycopg2
 from psycopg2 import sql
 import bcrypt
+import json
 from geopy.geocoders import Nominatim
 
 with open("credentials.yml", "r") as creds:
@@ -104,5 +105,64 @@ def get_user_id_by_username(username):
     except Exception as e:
         print(f"Error: {e}")
         return None
+    finally:
+        conn.close()
+
+def get_coordinates(location_name):
+    geolocator = Nominatim(user_agent="go2klo_app")
+
+    location = geolocator.geocode(location_name)
+
+    if location:
+        return location.latitude, location.longitude
+    else:
+        return None, None
+    
+
+def post_purchase(paid_price: float, usual_price: float, departments: list, comment: str, coords: tuple, user: str):
+    latitude, longitude = coords
+    conn = get_db_connection()
+
+    try:
+        with conn:
+            with conn.cursor() as cur:
+                # Prüfen, ob der Laden bereits existiert
+                cur.execute(
+                    """
+                    SELECT store_id FROM stores
+                    WHERE latitude = %s AND longitude = %s
+                    """,
+                    (latitude, longitude)
+                )
+                result = cur.fetchone()
+
+                if result:
+                    store_id = result[0]
+                else:
+                    # Neuen Laden eintragen (ohne store_name)
+                    cur.execute(
+                        """
+                        INSERT INTO stores (latitude, longitude)
+                        VALUES (%s, %s)
+                        RETURNING store_id
+                        """,
+                        (latitude, longitude)
+                    )
+                    store_id = cur.fetchone()[0]
+
+                # Eintrag für den Einkauf erstellen
+                cur.execute(
+                    """
+                    INSERT INTO purchases (store_id, paid_price, usual_price, departments, comment, username)
+                    VALUES (%s, %s, %s, %s, %s, %s)
+                    RETURNING purchase_id
+                    """,
+                    (store_id, paid_price, usual_price, ', '.join(departments), comment, user)
+                )
+                purchase_id = cur.fetchone()[0]
+
+                return True, f"Purchase posted successfully with ID {purchase_id} for store at ({latitude}, {longitude})"
+    except Exception as e:
+        return False, f"Error: {e}"
     finally:
         conn.close()

@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="rating-form">
+    <form action="/post/finish" enctype="multipart/form-data" method="post">
+        <h2 class="title">Poste deinen Eink(l)auf</h2>
+
+        <!-- <iframe src="'https://maps.google.com/maps?q=' + {{lat}} + ',' + {{lng}} + '&t=&z=15&ie=UTF8&iwloc=&output=embed'" /> -->
+        <iframe src = "https://maps.google.com/maps?q={{lat}},{{lng}}&hl=es;z=14&amp;output=embed"></iframe>
+        <div class="wrong-pin">Falscher geo-pin? <a href="/post">Versuch es hier nochmal.</a></div>
+    
+        {% if msg != None %}
+            <div class="rating-msg msg">{{msg}}</div>
+        {% endif %}
+    
+        <!-- <label for="toilet-name">Enter a name for the toilet:</label>
+        <input type="text" name="toilet-name" id="toilet-name" placeholder="toilet name"> -->
+    
+        <h2 class="subtitle">Beantworte uns folgende Fragen:</h2>
+    
+        <label for="cleanliness">Gezahlter Preis:</label>
+        <input type="number" name="paid" id="paid" min="0" placeholder="gezahlter Preis in Euro">
+        
+        <label for="cleanliness">Eigentlich üblicher Preis:</label>
+        <input type="number" name="usual" id="usual" min="0" placeholder="normaler Preis in Euro">
+        
+        <label for="cleanliness">Gespart in welchen Abteilungen?</label>
+        <div class="checkbox-wrapper">
+            {% for department in departments %}
+                <div class="cb">
+                    <input type="checkbox" name="department" id="{{department}}" value="{{department}}">
+                    <label class="checkbox-lbl" for="{{department}}">{{department}}</label>
+                </div>
+            {% endfor %}
+        </div>
+
+        <label for="comment">Lass einen optionalen Kommentar da:</label>
+        <textarea name="comment" id="comment" placeholder="hier Kommentar hinterlassen"></textarea>
+    
+        <button type="submit">Submit rating</button>
+    </form>
+</div>
+
+<script>
+    function updateValue(id, value) {
+        document.getElementById(id).textContent = value;
+    }
+</script>
+
+{% endblock %}

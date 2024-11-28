@@ -127,5 +127,54 @@ def my_profile():
     username = session["user"]
     return redirect(f"/profile/{username}")
 
+@app.route("/post")
+def post():
+    if not check_login_status():
+        return redirect("/")
+
+    return render_template("get_location.html", session=session)
+
+@app.route("/post/process", methods=["POST"])
+def process_rating():
+    if not check_login_status():
+        return redirect("/")
+
+    query = request.form["location_query"]
+    lat, lng = funcs.get_coordinates(query)
+
+    session["coords"] = (lat, lng)
+    departments = ["Backtheke", "Milchwaren", "Süßes", "Obst & Gemüse", "Fleisch", "Getränke", "Alkohol", "Tiefkühlwaren", "Sushi", "Snacks"]
+
+    return render_template("post.html", lat=lat, lng=lng, msg=None, session=session, departments=departments)
+
+@app.route("/post/finish", methods=["POST"])
+def finish_purchase():
+    if not check_login_status():
+        return redirect("/")
+
+    paid_price = request.form.get("paid")
+    usual_price = request.form.get("usual")
+    departments = request.form.getlist("department")
+    comment = request.form.get("comment")
+    user = session["user"]
+    coords = session.get("coords")
+
+    if not (paid_price and usual_price and coords):
+        return render_template("post.html", msg="Bitte fülle alle Pflichtfelder aus.", session=session)
+
+    response = funcs.post_purchase(
+        paid_price=float(paid_price),
+        usual_price=float(usual_price),
+        departments=departments,
+        comment=comment or "",
+        coords=coords,
+        user=user,
+    )
+    
+    if response[0]:
+        return redirect("/")
+    else:
+        return render_template("post.html", msg=response[1], session=session)
+
 if __name__ == "__main__":
     app.run(debug=True, port=6500)
