@@ -23,4 +23,4 @@
 
 ## Lizenz 📜
 
-Dieses Projekt ist unter der MIT-Lizenz lizenziert.
+Dieses Projekt ist unter der MIT-Lizenz lizenziert. (Und ja, eine 99% Kopie von go2klo, deswegen so schnell gewesen)
