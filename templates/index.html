@@ -10,4 +10,63 @@
     </div>
 </div>
 
+<div class="benefit-header">Warum solltest du grabbit nutzen?</div>
+
+<div class="benefit-cards">
+    <div class="card">
+        <div class="card-icon">
+            <span class="material-symbols-rounded">warning</span>
+        </div>
+        <div class="card-title">Nie wieder Sparchancen verpassen</div>
+        <div class="card-text">grabbit hilft dir, die besten Deals zu „erwischen“, bevor sie weg sind. Warum zahlen, wenn du’s für die Hälfte haben kannst?</div>
+    </div>
+    <div class="card">
+        <div class="card-icon">
+            <span class="material-symbols-rounded">map</span>
+        </div>
+        <div class="card-title">Finde Schnäppchen in deiner Nähe</div>
+        <div class="card-text">Egal, ob im Supermarkt um die Ecke oder im Online-Shop – grabbit zeigt dir, wo die größten Preisdiebstähle warten. Deine neue Geheimwaffe für den ultimativen Spartrip.</div>
+    </div>
+    <div class="card">
+        <div class="card-icon">
+            <span class="material-symbols-rounded">star</span>
+        </div>
+        <div class="card-title">Bewertungen von Sparfüchsen</div>
+        <div class="card-text">Vertraue auf die Community: Erfahre, welche Deals wirklich ein „Diebstahl“ sind – bewertet von anderen Schnäppchenjägern wie dir.</div>
+    </div>
+</div>
+
+<div class="benefit-header">Entdecke grabbit!</div>
+
+<div class="benefit-cards">
+    <a href="/leaderboard" style="text-decoration: none;">
+        <div class="card">
+            <div class="card-icon">
+                <span class="material-symbols-rounded">leaderboard</span>
+            </div>
+            <div class="card-title">Schnäppchen-Rangliste</div>
+            <div class="card-text">Die Rangliste zeigt die aktivsten Nutzer der Community, sortiert nach der Anzahl ihrer Beiträge. Miss dich mit anderen Sparfüchsen und hol dir Erfolge, während du deine besten Deals teilst!</div>
+        </div>
+    </a>
+    <a href="/explore" style="text-decoration: none;">
+        <div class="card">
+            <div class="card-icon">
+                <span class="material-symbols-rounded">public</span>
+            </div>
+            <div class="card-title">Erkunde die Map</div>
+            <div class="card-text">Mit der interaktiven Karte entdeckst du Schnäppchen in deiner Umgebung – inklusive Bewertungen und Tipps der Community. Perfekt, um die besten „Grabs“ in deiner Nähe zu finden!</div>
+        </div>
+    </a>
+</div>
+
+{% if not session["logged_in"] %}
+<div class="get-started">
+    <div class="box-text">Also, worauf wartest du noch? Leg heute los!</div>
+    <div class="action-btns">
+        <a href="/login"><button>Einloggen</button></a>
+        <a href="/register"><button>Registrieren</button></a>
+    </div>
+</div>
+{% endif %}
+
 {% endblock %}

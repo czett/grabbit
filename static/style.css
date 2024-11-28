@@ -28,6 +28,10 @@
     background: var(--fg);
 }
 
+.nopc{
+    display: none;
+}
+
 body, html {
     margin: 0;
     padding: 0;
@@ -236,4 +240,78 @@ body, html {
 
 .get-started .action-btns button:hover{
     filter: brightness(1.1);
+}
+
+/* login form */
+
+.logreg-form{
+    position: absolute;
+    inset: 50% auto auto 50%;
+    transform: translate(-50%, -50%);
+    /* background-color: green; */
+    aspect-ratio: 0.75; /* revise */
+    width: 25%;
+}
+
+.logreg-form form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2vh 0;
+    gap: 1vh;
+}
+
+.logreg-form .title{
+    font-size: 3rem;
+    width: 100%;
+    text-align: center;
+}
+
+.logreg-form form label, .logreg-form form input, .logreg-form form button{
+    width: 75%;
+    box-sizing: border-box;
+}
+
+.logreg-form form input, .logreg-form form button{
+    padding: 1.5vh 2vh;
+    outline: none;
+    border-radius: calc(var(--brad)/2);
+}
+
+.logreg-form form button{
+    margin-top: 2vh;
+    border: none;
+    background: var(--ac);
+    color: var(--bg);
+    font-size: 1.3rem;
+    cursor: pointer;
+}
+
+.logreg-form form input{
+    border: 2px solid var(--ac);
+    background-color: transparent;
+    font-size: 1.2rem;
+    color: var(--ac);
+}
+
+.logreg-form form label:last-of-type{
+    margin-top: 2vh;
+}
+
+.logreg-form form label{
+    font-size: 1.4rem;
+    font-weight: 600;
+}
+
+.msg{
+    width: 75%;
+    margin-bottom: 2vh;
+    padding: 1vh 0;
+    text-align: center;
+    background: lightcoral;
+    border: 2px solid #d4040d;
+    border-radius: calc(var(--brad)/2);
+    color: var(--bg);
+    font-weight: 600;
+    font-size: 1.1rem;
 }

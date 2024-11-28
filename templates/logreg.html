@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="logreg-form">
+    {% if action == "login" %}
+        <form action="/login/process" enctype="multipart/form-data" method="post">
+            <h2 class="title">Melde dich bei grabbit an</h2>
+            
+            {% if msg != None %}
+                <div class="logreg-msg msg">{{msg}}</div>
+            {% endif %}
+
+            <label for="username">Gib deinen Benutzernamen ein:</label>
+            <input type="text" name="username" id="username" placeholder="Benutzername">
+            <label for="password">Gib dein Passwort ein:</label>
+            <input type="password" name="password" id="password" placeholder="Passwort">
+            <button type="submit">Einloggen</button>
+            <a href="/register">
+                <div class="switch-form">Ich würde mich lieber registrieren</div>
+            </a>
+        </form>
+    {% endif %}
+    {% if action == "register" %}
+        <form action="/register/process" enctype="multipart/form-data" method="post">
+            <h2 class="title">Registriere dich bei grabbit</h2>
+
+            {% if msg != None %}
+                <div class="logreg-msg msg">{{msg}}</div>
+            {% endif %}
+
+            <label for="username">Gib deinen Benutzernamen ein:</label>
+            <input type="text" name="username" id="username" placeholder="Benutzername">
+            <label for="password">Gib dein Passwort ein:</label>
+            <input type="password" name="password" id="password" placeholder="Passwort">
+            <button type="submit">Registrieren</button>
+            <a href="/login">
+                <div class="switch-form">Ich würde mich lieber einloggen</div>
+            </a>
+        </form>
+    {% endif %}
+</div>
+
+{% endblock %}
+
+{% block footer %}
+{% endblock %}
