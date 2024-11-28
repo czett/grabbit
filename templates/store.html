@@ -16,8 +16,8 @@
             <a href="/profile/{{ rating.username }}"><strong>{{ rating.username }}</strong>:</a>
             Bezahlt: {{ rating.paid_price }} Euro, 
             Normalpreis: {{ rating.usual_price }} Euro,
-            Multiplikator: {{ (rating.usual_price / rating.paid_price) | round(2) }},
-            Kommentar: "{{ rating.comment }}"
+            Multiplikator: {% if rating.paid_price == 0 %}&#8734 (unendlich){% else %}{{ (rating.usual_price / rating.paid_price) | round(2) }}{% endif %},
+            Kommentar: "{{ rating.comment }}";
         </li>
     {% endfor %}
 </ul>
