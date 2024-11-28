@@ -49,3 +49,60 @@ def login(username: str, password: str):
         return False, f"Error: {e}"
     finally:
         conn.close()
+
+def check_user_exists(user_id: str):
+    """
+    Checks if a user exists in the database by their user_id.
+    
+    Args:
+        user_id (str): The ID of the user to check.
+
+    Returns:
+        bool: True if the user exists, False otherwise.
+    """
+    try:
+        conn = get_db_connection()
+        with conn:
+            with conn.cursor() as cur:
+                cur.execute("SELECT 1 FROM users WHERE username = %s", (user_id,))
+                user = cur.fetchone()
+
+                if user:
+                    return True
+                else:
+                    return False
+    except Exception as e:
+        print(f"Error: {e}")
+        return False
+    finally:
+        conn.close()
+
+def get_username_by_user_id(user_id):
+    try:
+        conn = get_db_connection()
+        with conn.cursor() as cur:
+            cur.execute("SELECT username FROM users WHERE user_id = %s", (user_id,))
+            username = cur.fetchone()
+            if username:
+                return username[0]
+            else:
+                return None
+    except Exception as e:
+        return None
+
+def get_user_id_by_username(username):
+    try:
+        conn = get_db_connection()
+        with conn.cursor() as cur:
+            cur.execute("SELECT user_id FROM users WHERE username = %s", (username,))
+            user = cur.fetchone()
+
+            if user:
+                return user[0]
+            else:
+                return None
+    except Exception as e:
+        print(f"Error: {e}")
+        return None
+    finally:
+        conn.close()

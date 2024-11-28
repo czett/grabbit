@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, session, request
+from flask import Flask, render_template, redirect, session, request, url_for
 import funcs
 
 app = Flask(__name__)
@@ -68,6 +68,64 @@ def process_register():
 def logout():
     session.clear()
     return redirect("/")
+
+@app.route("/profile/<int:pid>")
+def profile(pid):
+    # if not funcs.check_user_exists(pid):
+    #     return redirect("/")
+
+    pid = int(pid)
+    
+    #ratings = funcs.get_user_ratings(pid)
+    uname = funcs.get_username_by_user_id(pid)
+
+    #user_achievements = funcs.get_achievements_by_user_id(pid)[1]
+
+    # return str(ratings)
+
+    # Calculate the average latitude and longitude for all rated toilets
+    # if ratings != []:
+    #     avg_lat = sum(rating['latitude'] for rating in ratings) / len(ratings)
+    #     avg_lon = sum(rating['longitude'] for rating in ratings) / len(ratings)
+    # else:
+    #     # Default center if no ratings
+    #     avg_lat, avg_lon = 51.505, -0.09 # default is uk or so
+
+    if session.get("user"):
+        if session["user"] == uname:
+            own = True
+        else:
+            own = False
+
+    # return nots as list of notifications, as of now list of dicts
+    if uname == session["user"]:
+        if session.get("notifications"):
+            nots = session["notifications"]
+        else:
+            nots = []
+    else:
+        nots = []
+
+    return render_template("profile.html", ratings=[], session=session, name=uname, own=own)
+
+@app.route("/profile/<username>")
+def profile_by_username(username):
+    # Fetch the user ID using the username
+    user_id = funcs.get_user_id_by_username(username)
+    
+    if not user_id:
+        return redirect("/")  # Redirect to homepage if username does not exist
+    
+    # Redirect to the original profile route with user ID
+    return redirect(url_for('profile', pid=user_id))
+
+@app.route("/myprofile")
+def my_profile():
+    if not check_login_status():
+        return redirect("/")
+    
+    username = session["user"]
+    return redirect(f"/profile/{username}")
 
 if __name__ == "__main__":
     app.run(debug=True, port=6500)
