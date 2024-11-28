@@ -1,4 +1,4 @@
-![banner where?](https://github.com/czett/go2klo/blob/main/static/img/banner.png)
+![banner where?](https://github.com/czett/grabbit/blob/main/static/img/banner.png)
 
 # grabbit - Ein Shopping-Bewertungstool 🛍️
 
