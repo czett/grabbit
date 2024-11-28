@@ -1,0 +1,239 @@
+@import url('https://fonts.googleapis.com/css2?family=Gabarito:wght@400..900&family=SUSE:wght@100..800&display=swap');
+
+:root{
+    --fg: #131B23;
+    --bg: #f8f4f9;
+    --ac: #e469d3;
+
+    --rlpad: 15vw;
+    --brad: 1.5rem;
+    --trans: 250ms;
+    --tbmar: 3vh;
+}
+
+::selection{
+    background: var(--ac);
+    color: var(--bg);
+}
+
+::-webkit-scrollbar{
+    width: 5px;
+}
+
+::-webkit-scrollbar-track{
+    background: var(--bg);
+}
+
+::-webkit-scrollbar-thumb{
+    background: var(--fg);
+}
+
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: var(--bg);
+    overflow-x: hidden;
+}
+
+*{
+    color: var(--fg);
+    font-family: 'GABARITO';
+}
+
+.content{
+    padding: 0 var(--rlpad);
+    padding-top: 10vh;
+    flex: 1;
+}
+
+/* nav */
+
+.nav{
+    z-index: 1000;
+    width: 100vw;
+    position: fixed;
+    top: 0;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 10vh;
+    padding: 0 var(--rlpad);
+    background: var(--bg);
+}
+
+.nav .links{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.nav .links *{
+    font-size: 1.3rem;
+    text-decoration: none;
+}
+
+.nav .links .logo{
+    font-size: 2.5rem;
+    text-decoration: none;
+    font-family: 'SUSE';
+    color: var(--ac);
+    font-weight: 700;
+    cursor: pointer;
+}
+
+/* footer */
+
+.footer{
+    width: 100vw;
+    box-sizing: border-box;
+    padding: 3vh 0;
+    background-color: var(--ac);
+}
+
+.footer .flinks{
+    gap: 5vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.footer .flinks *{
+    color: var(--bg);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.banner{
+    margin: var(--tbmar) 0;
+    margin-top: 5vh;
+    aspect-ratio: 4;
+    width: 100%;
+    background-color: var(--ac);
+    border-radius: var(--brad);
+    overflow: hidden;
+    position: relative;
+}
+
+.banner .icon{
+    position: absolute;
+    inset: auto 0% 0% auto;
+}
+
+.banner .icon span{
+    font-size: 10rem;
+    color: var(--bg);
+}
+
+.banner .title-text{
+    position: absolute;
+    inset: 2vw auto auto 2vw;
+    color: var(--bg);
+    font-weight: 600;
+    font-size: 3rem;
+}
+
+.banner .bottom-text{
+    position: absolute;
+    inset: 6vw auto auto 2vw;
+    color: var(--bg);
+    font-weight: 400;
+    font-size: 1.25rem;
+}
+
+.benefit-cards{
+    margin: var(--tbmar) 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1vw;
+}
+
+.benefit-cards .card{
+    flex: 1;
+    background: var(--bg);
+    border: 2px solid var(--ac);
+    box-sizing: border-box;
+    padding: 2vh;
+    border-radius: var(--brad);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.benefit-cards .card .card-icon span{
+    font-size: 4rem;
+    margin-bottom: 1vh;
+}
+
+.benefit-cards .card .card-title, .benefit-cards a .card .card-title{
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 1vh;
+    text-decoration: none;
+}
+
+.benefit-cards .card .card-text, .benefit-cards a .card .card-text{
+    font-size: 1.25rem;
+    font-weight: 400;
+    margin-bottom: 1vh;
+    text-align: center;
+    text-decoration: none;
+}
+
+.benefit-header{
+    font-size: 2.5rem;
+    font-weight: 700;
+}
+
+.get-started{
+    margin: var(--tbmar) 0;
+    /* margin-top: 0; */
+    position: relative;
+    width: 100%;
+    margin-bottom: 5vh;
+}
+
+.get-started .icon span{
+    color: var(--ac);
+    position: absolute;
+    inset: auto auto 0% 5%;
+    transform: scale(-1, 1);
+    rotate: 90deg;
+    font-size: 20rem;
+}
+
+.get-started .box-text{
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 2vh;
+}
+
+.get-started .action-btns{
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 1vh;
+}
+
+.get-started .action-btns button{
+    box-sizing: border-box;
+    padding: 2vh 4vh;
+    font-size: 1.5rem;
+    color: var(--bg);
+    background: var(--ac);
+    border-radius: calc(0.5*var(--brad));
+    border: none;
+    outline: none;
+    transition: var(--trans);
+    cursor: pointer;
+}
+
+.get-started .action-btns button:hover{
+    filter: brightness(1.1);
+}

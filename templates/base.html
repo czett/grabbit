@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>grabbit</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+</head>
+<body>
+    
+{% block navbar %}
+<div class="nav">
+    <div class="nopc menu-icon" onmousedown="mobileMenu()" data-collapsed="1">
+        <span class="material-symbols-rounded menu-icon-span">menu</span>
+    </div>
+    <div class="links">
+        <a href="/" class="link">Home</a>
+        <a href="/explore" class="link">Entdecken</a>
+
+        <a href="/" class="nomobile">
+            <div class="logo">
+                grabbit
+            </div>
+        </a>
+
+        <a href="/rate" class="link">Neuer Eintrag</a>
+        <a href="/myprofile" class="link">Profile</a>
+    </div>
+</div>
+{% endblock %}
+
+<div class="content">
+    {% block content %}
+    {% endblock %}
+</div>
+
+{% block footer %}
+<div class="footer">
+    <div class="flinks">
+        <a href="#" class="link">about us</a>
+        <a href="#" class="link">legal info</a>
+        <a href="#" class="link">miscellaneous</a>
+    </div>
+</div>
+{% endblock %}
+
+</body>
+</html>
