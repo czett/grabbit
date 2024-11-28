@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, session, request, url_for
+from flask import Flask, render_template, redirect, session, request, url_for, jsonify
 import funcs
 
 app = Flask(__name__)
@@ -175,6 +175,16 @@ def finish_purchase():
         return redirect("/")
     else:
         return render_template("post.html", msg=response[1], session=session)
+    
+@app.route("/explore")
+def explore():
+    stores = funcs.get_all_stores()
+    return render_template("explore.html", stores=stores, session=session)
+
+@app.route("/api/stores")
+def stores_api():
+    stores = funcs.get_all_stores()
+    return jsonify(stores)
 
 if __name__ == "__main__":
     app.run(debug=True, port=6500)

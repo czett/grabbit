@@ -166,3 +166,41 @@ def post_purchase(paid_price: float, usual_price: float, departments: list, comm
         return False, f"Error: {e}"
     finally:
         conn.close()
+
+def get_all_stores():
+    conn = get_db_connection()
+
+    try:
+        with conn:
+            with conn.cursor() as cur:
+                # SQL-Query, um alle Läden mit den Koordinaten und der Anzahl der Bewertungen zu holen
+                cur.execute("""
+                    SELECT s.store_id, s.latitude, s.longitude, COUNT(p.purchase_id) AS ratings_count
+                    FROM stores s
+                    LEFT JOIN purchases p ON s.store_id = p.store_id
+                    GROUP BY s.store_id
+                """)
+
+                # Ergebnisse holen
+                stores = cur.fetchall()
+
+                # Ergebnisformat: Liste von Dictionaries mit lat, lng und der Anzahl der Bewertungen
+                store_list = [
+                    {"store_id": store[0], "latitude": store[1], "longitude": store[2], "ratings_count": store[3]}
+                    for store in stores
+                ]
+
+                return store_list
+
+    except Exception as e:
+        return f"Error: {e}"
+    finally:
+        conn.close()
+
+def coords_to_address(latitude, longitude):
+    geolocator = Nominatim(user_agent="go2klo_app")
+    location = geolocator.reverse((latitude, longitude))
+    if location:
+        return location.address
+    else:
+        return "Addresse nicht gefunden"

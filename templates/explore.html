@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="explore-title">Karte der bewerteten Läden</h1>
+<div class="map-tip">Tipp: Klicke auf einen Pin, um die Bewertungen des Lades zu sehen</div>
+<div id="map"></div>
+
+<div class="stores-list">
+    {% for store in stores %}
+    <a href="/store/{{store['store_id']}}">
+        <div class="store">
+            <div class="name">Laden: {{store["store_id"]}}</div>
+            <div class="ratings">Bewertungen: {{store["ratings_count"]}}</div>
+            <div class="coords">Koordinaten: {{store["latitude"]}}, {{store["longitude"]}}</div>
+        </div>
+    </a>
+    {% endfor %}
+</div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script>
+    // Initialisiere die Karte und setze den Mittelpunkt auf Deutschland
+    var map = L.map('map').setView([51.1657, 10.4515], 6);  // Zentrales Europa (Deutschland)
+
+    // Füge das OpenStreetMap-Kartenlayer hinzu
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> Mitwirkende'
+    }).addTo(map);
+
+    // Hole die Läden-Daten vom Flask-Backend
+    fetch('/api/stores')
+        .then(response => response.json())
+        .then(data => {
+            // Schleife durch jeden Store und füge einen Marker hinzu
+            data.forEach(function(store) {
+                var marker = L.marker([store.latitude, store.longitude])
+                    .addTo(map)
+                    .bindPopup('Laden-ID: ' + store.store_id);
+
+                // Füge ein Klick-Ereignis für jeden Marker hinzu
+                marker.on('click', function() {
+                    // Leite zur Store-Detailseite weiter
+                    window.location.href = '/store/' + store.store_id;
+                });
+            });
+        })
+        .catch(error => console.error('Fehler beim Abrufen der Store-Daten:', error));
+</script>
+{% endblock %}
