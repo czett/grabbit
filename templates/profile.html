@@ -21,10 +21,10 @@
         {% for purchase in purchases %}
         <li class="purchase">
             <a href="/store/{{ purchase.store_id }}"><strong>Store #{{ purchase.store_id }}:</strong></a>
-            Bezahlt: {{ purchase.paid_price }} Euro;
-            Normalpreis: {{ purchase.usual_price }} Euro;
-            Abteilungen: {{ purchase.departments }};
-            Kommentar: "{{ purchase.comment }}"
+            Bezahlt: {{ purchase.purchases[0].paid_price }} Euro;
+            Normalpreis: {{ purchase.purchases[0].usual_price }} Euro;
+            Abteilungen: {{ purchase.purchases[0].departments }};
+            Kommentar: "{{ purchase.purchases[0].comment }}"
         </li>
         {% endfor %}
     </ul>

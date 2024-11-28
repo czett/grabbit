@@ -28,7 +28,7 @@
         </a>
 
         <a href="/post" class="link">Neuer Eintrag</a>
-        <a href="/myprofile" class="link">Profile</a>
+        <a href="/myprofile" class="link">Profil</a>
     </div>
 </div>
 {% endblock %}
@@ -47,6 +47,35 @@
     </div>
 </div>
 {% endblock %}
+
+<script>
+    function mobileMenu(){
+        iconBtn = document.querySelector(".menu-icon");
+        // let state = iconBtn.dataset.collapsed;
+
+        if (iconBtn.dataset.collapsed == "1"){
+            document.querySelector(".links").style.visibility = "visible";
+            document.querySelector(".menu-icon-span").style.rotate = "90deg";
+            iconBtn.dataset.collapsed = "0";
+        }else{
+            document.querySelector(".links").style.visibility = "hidden";
+            document.querySelector(".menu-icon-span").style.rotate = "0deg";
+            iconBtn.dataset.collapsed = "1";
+        }
+    }
+
+    function notiToggler(){
+        const box = document.querySelector(".notifications-box");
+
+        if (box.dataset.collapsed == "1"){
+            box.style.visibility = "visible";
+            box.dataset.collapsed = "0";
+        }else{
+            box.style.visibility = "hidden";
+            box.dataset.collapsed = "1";
+        }
+    }
+</script>
 
 </body>
 </html>

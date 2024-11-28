@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="banner">
+    <div class="title-text">Wer ist der Sparmeister?</div>
+    <div class="bottom-text">Schau auf das Leaderboard hier!</div>
+    <div class="icon">
+        <span class="material-symbols-rounded">leaderboard</span>
+    </div>
+</div>
+
+<div class="leaderboard">
+    <div class="title">Leaderboard</div>
+    {% for entry in leaderboard %}
+        <div class="entry">
+            <a href="/profile/{{entry[0]}}">
+                <div class="username">{{entry[0]}}</div>
+            </a>
+            <div class="posts">{{entry[1]}}</div>
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

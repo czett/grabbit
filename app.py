@@ -98,6 +98,8 @@ def profile(pid):
     else:
         nots = []
 
+    #return str(posts)
+
     return render_template("profile.html", purchases=posts, session=session, name=uname, own=own)
 
 @app.route("/profile/<username>")
@@ -172,6 +174,11 @@ def finish_purchase():
 def explore():
     stores = funcs.get_all_stores()
     return render_template("explore.html", stores=stores, session=session)
+
+@app.route("/leaderboard")
+def leaderboard():
+    leaderboard_list = funcs.get_leaderboard()
+    return render_template("leaderboard.html", leaderboard=leaderboard_list, session=session)
 
 @app.route("/api/stores")
 def stores_api():

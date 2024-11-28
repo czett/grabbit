@@ -52,15 +52,6 @@ def login(username: str, password: str):
         conn.close()
 
 def check_user_exists(user_id: str):
-    """
-    Checks if a user exists in the database by their user_id.
-    
-    Args:
-        user_id (str): The ID of the user to check.
-
-    Returns:
-        bool: True if the user exists, False otherwise.
-    """
     try:
         conn = get_db_connection()
         with conn:
@@ -253,16 +244,6 @@ def get_store_details(store_id):
         return {"error": str(e)}
 
 def get_user_purchases(user_id: int):
-    """
-    Fetches all unique stores the user has made purchases at, including their coordinates 
-    and the user's purchases in those stores.
-    
-    Args:
-        user_id (int): The ID of the user for whom to fetch purchases.
-    
-    Returns:
-        list: A list of dictionaries containing unique store details and the user's purchases at each store.
-    """
     try:
         conn = get_db_connection()
         with conn:
@@ -325,5 +306,25 @@ def get_user_purchases(user_id: int):
 
     except Exception as e:
         return {"error": str(e)}
+    finally:
+        conn.close()
+
+def get_leaderboard():
+    try:
+        conn = get_db_connection()
+        with conn:
+            with conn.cursor() as cur:
+                cur.execute("""
+                    SELECT u.username, COUNT(p.purchase_id) AS post_count
+                    FROM users u
+                    LEFT JOIN purchases p ON u.username = p.username
+                    GROUP BY u.username
+                    ORDER BY post_count DESC;
+                """)
+                result = cur.fetchall()
+                return [[row[0], row[1]] for row in result]
+    except Exception as e:
+        print(f"Error fetching user data: {e}")
+        return []
     finally:
         conn.close()
