@@ -1,6 +1,6 @@
 ![banner where?](https://github.com/czett/grabbit/blob/main/static/img/banner.png)
 
-# grabbit - Ein Shopping-Bewertungstool 🛍️
+# grabbit - Ein Shopping-Bewertungstool 🐰🩷
 
 **grabbit** ist eine Plattform, auf der Benutzer ihre Einkäufe in verschiedenen Geschäften posten können, um zu zeigen, wie viel sie im Vergleich zum normalen Preis gespart haben 💸. Benutzer können die Geschäfte auf einer interaktiven Karte sehen 🗺️, Bewertungen hinterlassen und nachsehen, wie andere Einkäufer ähnliche Produkte bewertet haben.
 
