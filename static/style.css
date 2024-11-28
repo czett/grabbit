@@ -463,15 +463,15 @@ label.checkbox-lbl{
     padding-bottom: 2vh;
 }
 
-.user-profile .ratings-header{
+.user-profile .purchases-header{
     font-size: 1.75rem;
 }
 
-.user-profile .rating{
+.user-profile .purchase{
     font-size: 1.25rem;
     line-height: 150%;
 }
 
-.users-ratings{
+.users-purchases{
     margin-bottom: 3vh;
 }
